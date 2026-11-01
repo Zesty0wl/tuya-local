@@ -1,0 +1,101 @@
+name: Radiator element
+products:
+  - id: apuecykkkp8ejehv
+    manufacturer: Ecostrad
+    model: iQ WiFi Element
+entities:
+  - entity: climate
+    translation_key: thermostat
+    dps:
+      - id: 1
+        type: boolean
+        name: hvac_mode
+        mapping:
+          - dps_val: true
+            value: "heat"
+          - dps_val: false
+            value: "off"
+      - id: 2
+        type: string
+        name: preset_mode
+        mapping:
+          - dps_val: "Prog"
+            value: program
+          - dps_val: "Eco"
+            value: eco
+          - dps_val: "Comft"
+            value: comfort
+          - dps_val: "Frame"
+            value: boost
+          - dps_val: "Boost"
+            value: Timed boost
+          - dps_val: "Cold"
+            value: away
+      - id: 16
+        type: integer
+        name: temperature
+        unit: C
+        range:
+          min: 5
+          max: 70
+        mapping:
+          - step: 1
+            range:
+              min: 5
+              max: 30
+            constraint: preset_mode
+            conditions:
+              - dps_val: "Frame"
+                range:
+                  min: 30
+                  max: 70
+              - dps_val: "Boost"
+                range:
+                  min: 35
+                  max: 35
+      - id: 24
+        type: integer
+        name: current_temperature
+      - id: 161
+        type: boolean
+        name: hvac_action
+        mapping:
+          - dps_val: true
+            value: heating
+          - dps_val: false
+            value: idle
+      - id: 114
+        type: string
+        name: program_period
+        optional: true
+  - entity: lock
+    translation_key: child_lock
+    category: config
+    dps:
+      - id: 40
+        type: boolean
+        name: lock
+  - entity: number
+    translation_key: temperature_calibration
+    class: temperature_delta
+    category: config
+    dps:
+      - id: 27
+        type: integer
+        name: value
+        unit: C
+        range:
+          min: -5
+          max: 5
+  - entity: number
+    name: Boost time
+    class: duration
+    category: config
+    dps:
+      - id: 111
+        type: integer
+        name: value
+        unit: h
+        range:
+          min: 0
+          max: 7
